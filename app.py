@@ -409,6 +409,7 @@ with tab2:
         csv = pred_df.to_csv(index=False).encode('utf-8')
         
         # Botones de descarga
+        # Botones de descarga
         col1, col2 = st.columns(2)
         with col1:
             st.download_button(
@@ -420,9 +421,15 @@ with tab2:
             )
         
         with col2:
+            # Convertir la figura a bytes antes de la descarga
+            from io import BytesIO
+            buf = BytesIO()
+            fig.savefig(buf, format="png")
+            buf.seek(0)
+            
             st.download_button(
                 label="Descargar Gráfico",
-                data=fig,
+                data=buf,
                 file_name='grafico_prediccion.png',
                 mime='image/png',
                 help="Descarga el gráfico como imagen PNG"

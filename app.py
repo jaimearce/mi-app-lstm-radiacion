@@ -165,12 +165,12 @@ with tab1:
     
     # URLs de datos (ejemplo)
     urls = {
-        "Datos_Centro_Cucuta_1h":"https://www.dropbox.com/scl/fi/ksmju96igz34ic19ht2ea/Datos_Centro_Cucuta_1h.csv?rlkey=6u1tkv4gr0en0vulrmt9ek3y5&st=2fxqn6be&dl=0",
-        "Datos_Torcoroma2_Cucuta":"https://www.dropbox.com/scl/fi/gd2z0zjaemwhed950tzhr/Datos_Torcoroma2_Cucuta.csv?rlkey=saq2y5g0fb0auh722cxf9z87q&st=tvkobdpj&dl=0",
-        "Datos_LomaDeBolivar_Cucuta":"https://www.dropbox.com/scl/fi/k5pv3oq58lile65ukqltf/Datos_LomaDeBolivar_Cucuta.csv?rlkey=igekok84zwwjtcejrivgggjjo&st=085ps83b&dl=0",
-        "Datos_AntoniaSantos_Cucuta":"https://www.dropbox.com/scl/fi/ckemqwwwh98zw1uuaxklo/Datos_AntoniaSantos_Cucuta.csv?rlkey=1bhwj7q64jgdjzfk5qbt89x77&st=abuqlrkh&dl=0",
-        "Patios_Centro":"https://www.dropbox.com/scl/fi/jwld88o2z7okv81k8dcb5/Patios_Centro.csv?rlkey=yuryueanbp2rgt2x6qiue0bhz&st=3vs1cp7a&dl=0",
-        "Datos_Aeropuerto_filtrado":"https://www.dropbox.com/scl/fi/l0z0z8itycfps6687dziz/Datos_Aeropuerto_filtrado.csv?rlkey=ss6cdmll2qb4cnrbpotljizxg&st=m13g3dui&dl=0"
+        "Datos_Centro_Cucuta_1h":"https://www.dropbox.com/scl/fi/ksmju96igz34ic19ht2ea/Datos_Centro_Cucuta_1h.csv?rlkey=6u1tkv4gr0en0vulrmt9ek3y5&st=2fxqn6be&dl=1",
+        "Datos_Torcoroma2_Cucuta":"https://www.dropbox.com/scl/fi/gd2z0zjaemwhed950tzhr/Datos_Torcoroma2_Cucuta.csv?rlkey=saq2y5g0fb0auh722cxf9z87q&st=tvkobdpj&dl=1",
+        "Datos_LomaDeBolivar_Cucuta":"https://www.dropbox.com/scl/fi/k5pv3oq58lile65ukqltf/Datos_LomaDeBolivar_Cucuta.csv?rlkey=igekok84zwwjtcejrivgggjjo&st=085ps83b&dl=1",
+        "Datos_AntoniaSantos_Cucuta":"https://www.dropbox.com/scl/fi/ckemqwwwh98zw1uuaxklo/Datos_AntoniaSantos_Cucuta.csv?rlkey=1bhwj7q64jgdjzfk5qbt89x77&st=abuqlrkh&dl=1",
+        "Patios_Centro":"https://www.dropbox.com/scl/fi/jwld88o2z7okv81k8dcb5/Patios_Centro.csv?rlkey=yuryueanbp2rgt2x6qiue0bhz&st=3vs1cp7a&dl=1",
+        "Datos_Aeropuerto_filtrado":"https://www.dropbox.com/scl/fi/l0z0z8itycfps6687dziz/Datos_Aeropuerto_filtrado.csv?rlkey=ss6cdmll2qb4cnrbpotljizxg&st=m13g3dui&dl=1"
     }
 
     df = None

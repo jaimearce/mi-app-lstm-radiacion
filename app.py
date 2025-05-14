@@ -1,7 +1,5 @@
 # App Web con Streamlit para Predicción de Radiación Solar
-# Esta app permite subir archivos CSV, hacer predicciones con un modelo LSTM entrenado, 
-# evaluar métricas y descargar resultados con interpretación intuitiva.
-# Versión mejorada con predicciones por intervalos y recomendaciones prácticas.
+
 
 import streamlit as st
 import pandas as pd
@@ -15,16 +13,66 @@ import requests
 from io import StringIO
 from datetime import datetime
 
-# Configuración inicial de la página de Streamlit
-st.set_page_config(page_title='Predicción Radiación Solar', layout='wide', page_icon="☀️")
+# Configuración inicial de la página
+st.set_page_config(
+    page_title='Predicción Radiación Solar', 
+    layout='wide',
+    initial_sidebar_state='expanded'
+)
+
+# Estilos personalizados
+def set_custom_style():
+    st.markdown(f"""
+    <style>
+        .main {{
+            background-color: #f5f9ff;
+        }}
+        .stApp {{
+            background-image: linear-gradient(to bottom, #ffffff, #f0f7ff);
+        }}
+        h1, h2, h3 {{
+            color: #003366;
+            font-family: 'Arial', sans-serif;
+        }}
+        .stButton>button {{
+            background-color: #0066cc;
+            color: white;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            border: none;
+        }}
+        .stDownloadButton>button {{
+            background-color: #009933;
+            color: white;
+        }}
+        .stMetric {{
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }}
+        .stAlert {{
+            border-radius: 10px;
+        }}
+        .stDataFrame {{
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }}
+        .css-1aumxhk {{
+            background-color: #0066cc;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
+
+set_custom_style()
 
 # Título principal
-st.title('☀️ Predicción de Radiación Solar - ALLSKY_SFC_SW_DWN')
+st.title('Predicción de Radiación Solar - ALLSKY_SFC_SW_DWN')
 
 # --------------------------------------------
 # Sección de Ayuda y Descripción
 # --------------------------------------------
-with st.expander("🧠 ¿Cómo usar esta app? Haz clic aquí"):
+with st.expander("Cómo usar esta app", expanded=False):
     st.markdown("""
     **Guía de uso:**
     
@@ -47,11 +95,11 @@ with st.expander("🧠 ¿Cómo usar esta app? Haz clic aquí"):
 # --------------------------------------------
 st.markdown("""
 ---
-📎 **Software desarrollado para la Universidad Francisco de Paula Santander**  
+**Software desarrollado para la Universidad Francisco de Paula Santander**  
 **Curso Integrador II - Ingeniería Electrónica**  
 **Autores**: Jaime Arce, Johan Salazar, Angel Hernández, Frank Portillo  
 **Asesor**: MSc. IE. Darwin O. Cardoso S. | **Coasesora**: MSc. IE. Oriana A. Lopez B.  
-📅 **Año**: 2025  
+**Año**: 2025  
 **Versión**: 2.1.0 | Última actualización: """ + datetime.now().strftime("%Y-%m-%d") + """  
 ---
 """)
@@ -103,13 +151,13 @@ def interpret_radiation(value):
         value = value[0] if len(value) > 0 else 0
     
     if value < 100:
-        return "☁️ Nublado - Baja producción solar"
+        return "Nublado - Baja producción solar"
     elif 100 <= value < 300:
-        return "⛅ Parcialmente nublado - Producción moderada"
+        return "Parcialmente nublado - Producción moderada"
     elif 300 <= value < 600:
-        return "🌤️ Mayormente soleado - Buena producción"
+        return "Mayormente soleado - Buena producción"
     else:
-        return "☀️ Soleado - Excelente producción solar"
+        return "Soleado - Excelente producción solar"
 
 def get_recommendation(avg_radiation):
     """Genera recomendaciones basadas en la radiación promedio"""
@@ -144,17 +192,38 @@ def get_recommendation(avg_radiation):
             ]
         }
 
+def show_prediction_card(title, value, delta=None, interpretation=""):
+    """Muestra una tarjeta de predicción profesional"""
+    delta_html = f"<div style='color: #666; font-size: 14px;'>{delta}</div>" if delta else ""
+    
+    st.markdown(f"""
+    <div style="
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    ">
+        <h3 style="color: #003366; margin-top: 0;">{title}</h3>
+        <div style="font-size: 24px; font-weight: bold; color: #0066cc;">{value}</div>
+        {delta_html}
+        <div style="margin-top: 10px; padding: 10px; background: #f5f9ff; border-radius: 5px;">
+            {interpretation}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # --------------------------------------------
 # Pestañas Principales
 # --------------------------------------------
-tab1, tab2 = st.tabs(["🧪 Predicción", "📊 Resultados y Recomendaciones"])
+tab1, tab2 = st.tabs(["Predicción", "Resultados"])
 
 with tab1:
-    st.subheader("📂 Carga de Datos")
+    st.subheader("Carga de Datos")
     
     # Opciones de datos predefinidos
     dataset_option = st.selectbox("Selecciona una ubicación de datos (NASA POWER)", [
-       "Seleccionar...", 
+        "Seleccionar...", 
         "Datos_Centro_Cucuta_1h",
         "Datos_Torcoroma2_Cucuta", 
         "Datos_LomaDeBolivar_Cucuta",
@@ -180,11 +249,11 @@ with tab1:
         with st.spinner(f'Cargando datos de {dataset_option}...'):
             df = load_data(urls.get(dataset_option))
             if df is not None:
-                st.success(f"✅ Datos cargados: {dataset_option}")
+                st.success(f"Datos cargados: {dataset_option}")
                 st.session_state['data_source'] = dataset_option
 
     # Opción para subir archivo personalizado
-    uploaded_file = st.file_uploader("⬆️ O sube tu archivo CSV", type=['csv'], 
+    uploaded_file = st.file_uploader("Sube tu archivo CSV", type=['csv'], 
                                    help="El archivo debe contener la columna ALLSKY_SFC_SW_DWN")
     
     if uploaded_file is not None:
@@ -193,22 +262,23 @@ with tab1:
             if 'ALLSKY_SFC_SW_DWN' not in df.columns:
                 st.error("El archivo debe contener la columna 'ALLSKY_SFC_SW_DWN'")
             else:
-                st.success("✅ Archivo cargado correctamente")
+                st.success("Archivo cargado correctamente")
                 st.session_state['data_source'] = "Archivo personalizado"
         except Exception as e:
             st.error(f"Error al leer el archivo: {str(e)}")
 
     # Configuración del modelo
     if df is not None:
-        st.subheader("⚙️ Configuración del Modelo")
-        n_steps = st.slider('Número de pasos hacia atrás (lookback)', 
-                           min_value=1, 
-                           max_value=100, 
-                           value=24,
-                           help="Determina cuántos puntos anteriores usará el modelo para cada predicción")
+        st.subheader("Configuración del Modelo")
+        n_steps = st.selectbox(
+            'Número de pasos hacia atrás (lookback)',
+            options=[1, 6, 12, 24, 48, 72],
+            index=3,
+            help="Determina cuántos puntos anteriores usará el modelo para cada predicción"
+        )
         
         # Mostrar vista previa de datos
-        with st.expander("🔍 Vista previa de los datos"):
+        with st.expander("Vista previa de los datos"):
             st.dataframe(df.head(), height=150)
             st.write(f"Total de registros: {len(df)}")
 
@@ -259,18 +329,17 @@ with tab1:
                             "scaler": scaler
                         })
                         
-                        st.success("✅ Predicción completada!")
-                        st.balloons()
+                        st.success("Predicción completada!")
                         
                     except Exception as e:
                         st.error(f"Error en la predicción: {str(e)}")
                         st.error("Asegúrese que el archivo 'modelo_lstm_radiacion.keras' está en el directorio correcto")
 
 with tab2:
-    st.subheader("📈 Resultados de la Predicción")
+    st.subheader("Resultados de la Predicción")
     
     if "y_inv" not in st.session_state:
-        st.info("ℹ️ Realiza una predicción en la pestaña anterior para ver los resultados")
+        st.info("Realiza una predicción en la pestaña anterior para ver los resultados")
     else:
         # Recuperar datos de la sesión
         y_inv = st.session_state["y_inv"]
@@ -281,7 +350,7 @@ with tab2:
         scaler = st.session_state.get("scaler", None)
         
         # Mostrar predicciones para diferentes lapsos
-        st.subheader("🔮 Predicción para Próximas Horas")
+        st.subheader("Predicción para Próximas Horas")
         
         cols = st.columns(4)
         time_intervals = [1, 3, 6, 12]
@@ -302,29 +371,18 @@ with tab2:
                         delta_text = "N/A"
                         delta_color = "off"
                     
-                    # Mostrar métrica
-                    st.metric(
-                        label=f"Próximas {hours} hora{'s' if hours > 1 else ''}",
+                    # Mostrar tarjeta de predicción
+                    show_prediction_card(
+                        title=f"Próximas {hours} hora{'s' if hours > 1 else ''}",
                         value=f"{avg_pred:.1f} W/m²",
                         delta=delta_text,
-                        delta_color=delta_color,
-                        help=f"Predicción promedio para las próximas {hours} horas"
-                    )
+                        interpretation=interpret_radiation(avg_pred))
                     
-                    # Mostrar condición interpretada
-                    condition = interpret_radiation(avg_pred)
-                    st.markdown(f"**Condición esperada:** {condition}")
-                    
-                    # Mostrar valores mínimos y máximos en el periodo
-                    st.markdown(f"""
-                    - Mínimo: {np.min(pred_values):.1f} W/m²  
-                    - Máximo: {np.max(pred_values):.1f} W/m²
-                    """)
                 else:
                     st.warning(f"No hay suficientes datos para {hours} horas")
         
         # Mostrar métricas de rendimiento
-        st.subheader("📊 Métricas de Rendimiento del Modelo")
+        st.subheader("Métricas de Rendimiento del Modelo")
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -343,12 +401,12 @@ with tab2:
                      help="Proporción de la varianza explicada por el modelo (0-1)")
         
         # Gráfico de resultados mejorado
-        st.subheader("📈 Comparación Visual")
+        st.subheader("Comparación Visual")
         fig = plot_results(y_inv, y_pred_inv, y_ma, y_lr, n_steps)
         st.pyplot(fig)
         
         # Recomendaciones basadas en la predicción
-        st.subheader("💡 Recomendaciones para Sistemas Solares")
+        st.subheader("Recomendaciones para Sistemas Solares")
         avg_next_6h = np.mean(y_pred_inv[:6]) if len(y_pred_inv) >= 6 else np.mean(y_pred_inv)
         recommendation = get_recommendation(avg_next_6h)
         
@@ -375,11 +433,11 @@ with tab2:
             st.markdown(f"- {item}")
         
         # Predicción extendida (opcional)
-        with st.expander("🔮 Predicción extendida para las próximas 24 horas"):
+        with st.expander("Predicción extendida para las próximas 24 horas"):
             if len(y_pred_inv) >= 24:
                 extended_pred = y_pred_inv[:24]
                 extended_fig, ax = plt.subplots(figsize=(12, 4))
-                ax.plot(extended_pred, color='#ff7f0e', linestyle='-', linewidth=2)
+                ax.plot(extended_pred, color='#0066cc', linestyle='-', linewidth=2)
                 ax.set_title("Predicción de radiación solar - Próximas 24 horas", fontsize=12)
                 ax.set_xlabel("Horas", fontsize=10)
                 ax.set_ylabel("Radiación (W/m²)", fontsize=10)
@@ -397,7 +455,7 @@ with tab2:
                 st.warning("No hay suficientes datos para mostrar la predicción de 24 horas")
         
         # Descarga de resultados
-        st.subheader("📥 Exportar Resultados")
+        st.subheader("Exportar Resultados")
         pred_df = pd.DataFrame({
             'Real': y_inv.flatten(),
             'Prediccion_LSTM': y_pred_inv.flatten(),
@@ -408,7 +466,6 @@ with tab2:
         # Convertir a CSV
         csv = pred_df.to_csv(index=False).encode('utf-8')
         
-        # Botones de descarga
         # Botones de descarga
         col1, col2 = st.columns(2)
         with col1:
@@ -436,7 +493,7 @@ with tab2:
             )
         
         # Explicación técnica
-        with st.expander("🔍 Detalles Técnicos"):
+        with st.expander("Detalles Técnicos"):
             st.markdown("""
             **Modelo LSTM utilizado:**
             - Arquitectura: 2 capas LSTM con 50 neuronas cada una

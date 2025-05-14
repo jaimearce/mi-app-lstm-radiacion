@@ -93,7 +93,8 @@ with st.expander("Cómo usar esta app", expanded=False):
 # --------------------------------------------
 # Sección de Créditos Académicos
 # --------------------------------------------
-st.markdown("""
+with st.expander("Cómo usar esta app", expanded=False):
+    st.markdown("""
 ---
 **Software desarrollado para la Universidad Francisco de Paula Santander**  
 **Curso Integrador II - Ingeniería Electrónica**  

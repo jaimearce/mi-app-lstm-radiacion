@@ -24,7 +24,7 @@ st.set_page_config(
 def set_custom_style():
     st.markdown("""
     <style>
-        /* Fondo degradado al estilo login profesional */
+        /* Fondo degradado al estilo login  */
         .stApp {
             background: linear-gradient(to bottom right, #4facfe, #00f2fe);
             background-attachment: fixed;
@@ -40,7 +40,7 @@ def set_custom_style():
             margin: auto;
         }
 
-        /* Títulos elegantes */
+        /* Títulos */
         h1, h2, h3, h4 {
             color: #003366;
             font-family: 'Segoe UI', sans-serif;
@@ -78,24 +78,40 @@ def set_custom_style():
             padding: 0.4rem 0.8rem;
         }
 
-        /* Ajuste para que el texto del select no se corte */
+        /* selecbox */
         .stSelectbox>div>div>div {
-            min-width: 320px !important;
-            max-width: 100%;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-            white-space: nowrap !important;
+            min-width: 100% !important;
+            width: auto !important;
+            max-width: 100% !important;
+            white-space: normal !important;
             overflow: visible !important;
-            text-overflow: clip !important;
+            text-overflow: unset !important;
+        }
+        
+        .stSelectbox>div>div>div>div>input {
+            min-width: 100% !important;
+            width: 100% !important;
+            white-space: normal !important;
+            overflow: visible !important;
+            text-overflow: unset !important;
+        }
+        
+        /* Contenedor del dropdown */
+        .stSelectbox>div>div>div>div>div>div {
+            min-width: 100% !important;
+            width: auto !important;
+        }
+        
+        /* Opciones del dropdown */
+        .stSelectbox [role="listbox"] div {
+            white-space: normal !important;
+            word-wrap: break-word !important;
         }
 
-        .stSelectbox>div>div>div>div>input {
-            min-width: 300px !important;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-            white-space: nowrap !important;
-            overflow: visible !important;
-            text-overflow: clip !important;
+        /* Placeholder del SelectBox */
+        .stSelectbox>div>div>div>div>div>span {
+            color: #666 !important;
+            font-style: italic !important;
         }
 
         /* Tablas */
@@ -111,6 +127,12 @@ def set_custom_style():
             border-radius: 10px;
         }
 
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .stSelectbox>div {
+                width: 100% !important;
+            }
+        }
     </style>
     """, unsafe_allow_html=True)
 

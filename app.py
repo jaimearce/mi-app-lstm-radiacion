@@ -24,60 +24,93 @@ st.set_page_config(
 def set_custom_style():
     st.markdown(f"""
     <style>
+        /* Fondo principal con imagen y overlay oscuro */
         .main {{
-            background-color: #f5f9ff;
+            background-color: rgba(0, 0, 0, 0.01);
         }}
         .stApp {{
-            background-image: url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
+            background: linear-gradient(rgba(0, 0, 0, 0.7), 
+                        url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
-        h1, h2, h3 {{
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.99);
+        
+        /* Tipografía y títulos */
+        h1, h2, h3, h4, h5, h6 {{
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }}
+        
+        /* Texto general */
+        .stMarkdown, .stText, .css-1aumxhk {{
+            color: #f0f0f0 !important;
+        }}
+        
+        /* Contenedores principales */
+        .block-container {{
+            background-color: rgba(0, 43, 54, 0.85) !important;  /* Azul oscuro semitransparente */
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }}
+        
+        /* Botones */
         .stButton>button {{
-            background-color: #009933;
-            color: white;
-            border-radius: 5px;
-            padding: 0.5rem 1rem;
+            background-color: #009933 !important;
+            color: white !important;
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
             border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }}
-        .stDownloadButton>button {{
-            background-color: #009933;
-            color: white;
+        .stButton>button:hover {{
+            background-color: #007722 !important;
+            transform: translateY(-1px);
         }}
+        
+        /* Componentes específicos */
         .stMetric {{
-            background-color: rgba(255, 255, 255, 0.050);
+            background-color: rgba(0, 82, 102, 0.7) !important;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }}
+        
         .stAlert {{
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.050);
+            background-color: rgba(0, 82, 102, 0.7) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }}
+        
         .stDataFrame {{
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            background-color: rgba(255, 255, 255, 0.050);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 82, 102, 0.7) !important;
         }}
+        
+        /* Barra lateral */
         .css-1aumxhk {{
-            background-color: #0066cc;
+            background-color: rgba(0, 43, 54, 0.9) !important;
         }}
-        /* Contenedores principales con fondo semitransparente */
-        .block-container {{
-            background-color: rgba(255, 255, 255, 0.050);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 1rem;
+        
+        /* Inputs y selects */
+        .stSelectbox, .stTextInput, .stFileUploader {{
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 6px;
         }}
-        /* Mejorar legibilidad del texto sobre el fondo */
-        .stMarkdown, .stText {{
-            color: #333333;
+        
+        /* Efecto hover para tarjetas */
+        .block-container:hover {{
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
         }}
     </style>
     """, unsafe_allow_html=True)

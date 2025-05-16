@@ -69,13 +69,17 @@ def set_custom_style():
             transform: scale(1.05);
         }
 
-        /* Inputs limpios */
+        /* Inputs limpios con ancho mínimo para que no se corte el texto */
         .stTextInput>div>div>input,
         .stSelectbox>div>div>div>div {
             background-color: #ffffffcc;
             border-radius: 6px;
             border: 1px solid #bbb;
             padding: 0.4rem 0.8rem;
+            min-width: 220px;  /* Aumenta el ancho mínimo para que no se corte */
+            white-space: nowrap; /* No permitir salto de línea */
+            overflow: visible;   /* Mostrar todo el texto */
+            text-overflow: clip; /* Evitar puntos suspensivos */
         }
 
         /* Tablas */

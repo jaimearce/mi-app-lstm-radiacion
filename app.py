@@ -23,91 +23,82 @@ st.set_page_config(
 def set_custom_style():
     st.markdown(f"""
     <style>
-        /* Fondo principal con imagen y overlay oscuro */
-        .main {{
-            background-color: rgba(149, 232, 29, 0.01);
-        }}
+        /* Fondo principal */
         .stApp {{
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                       url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
+            background: url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
-        
+
         /* Tipografía y títulos */
         h1, h2, h3, h4, h5, h6 {{
-            color: #ffffff !important;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #1B1F23 !important;
+            font-family: 'Segoe UI', sans-serif;
         }}
-        
+
         /* Texto general */
-        .stMarkdown, .stText, .css-1aumxhk {{
-            color: #ffffff !important;
+        .stMarkdown, .stText, .css-1aumxhk, .css-1v3fvcr {{
+            color: #222222 !important;
+            font-family: 'Segoe UI', sans-serif;
         }}
-        
+
         /* Contenedores principales */
         .block-container {{
-            background-color: rgba(0, 43, 54, 0.05) !important;  /* Azul oscuro semitransparente */
-            border-radius: 10px;
+            background-color: #ffffff;
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }}
-        
+
         /* Botones */
         .stButton>button {{
-            background-color: #009933 !important;
+            background-color: #007ACC !important;
             color: white !important;
-            border-radius: 8px;
-            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            padding: 0.5rem 1.2rem;
             border: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }}
         .stButton>button:hover {{
-            background-color: #007722 !important;
+            background-color: #005A99 !important;
             transform: translateY(-1px);
         }}
-        
-        /* Componentes específicos */
+
+        /* Métricas y cuadros */
         .stMetric {{
-            background-color: rgba(0, 82, 102, 0.7) !important;
+            background-color: #E6F0FA !important;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }}
-        
-        .stAlert {{
+
+        /* DataFrame y alertas */
+        .stDataFrame, .stAlert {{
+            background-color: #FAFAFA !important;
             border-radius: 10px;
-            background-color: rgba(0, 82, 102, 0.7) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #ddd;
         }}
-        
-        .stDataFrame {{
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            background-color: rgba(0, 82, 102, 0.7) !important;
-        }}
-        
+
         /* Barra lateral */
         .css-1aumxhk {{
-            background-color: rgba(0, 43, 54, 0.9) !important;
+            background-color: #f0f2f6 !important;
         }}
-        
-        /* Inputs y selects */
+
+        /* Inputs */
         .stSelectbox, .stTextInput, .stFileUploader {{
-            background-color: rgba(255, 255, 255, 0.1) !important;
+            background-color: #ffffff !important;
+            border: 1px solid #ccc;
             border-radius: 6px;
         }}
-        
-        /* Efecto hover para tarjetas */
+
+        /* Hover de tarjetas */
         .block-container:hover {{
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
             transition: all 0.3s ease;
         }}
@@ -246,60 +237,93 @@ def show_prediction_card(title, value, delta=None, interpretation=""):
 
 def plot_radiation_area(pred, time_steps=24):
     """
-    Gráfico de área profesional para radiación solar
+    Gráfico profesional mejorado para radiación solar con mejor contraste y diseño
     """
     try:
         # Configuración de estilo con mejor contraste
         plt.style.use('seaborn-whitegrid')
         plt.rcParams.update({
-            'axes.facecolor': '#f5f5f5',
-            'figure.facecolor': '#f5f5f5',
+            'axes.facecolor': '#f0f2f6',
+            'figure.facecolor': '#f0f2f6',
             'axes.edgecolor': '#333333',
             'axes.labelcolor': '#333333',
             'text.color': '#333333',
             'xtick.color': '#333333',
-            'ytick.color': '#333333'
+            'ytick.color': '#333333',
+            'grid.color': '#dddddd'
         })
         
+        # Crear figura con tamaño adecuado
         fig, ax = plt.subplots(figsize=(12, 6))
         
         # Asegurar que los datos tengan la forma correcta
         if pred.ndim == 1:
-            if len(pred) < time_steps:
-                time_steps = len(pred)
-            pred = pred[:time_steps].reshape(1, -1)
+            pred = pred.reshape(1, -1)
         
-        # Verificar dimensiones
-        if pred.shape[1] < time_steps:
-            time_steps = pred.shape[1]
+        # Limitar al número de pasos de tiempo solicitados
+        if pred.shape[1] > time_steps:
+            pred = pred[:, :time_steps]
         
-        hours = np.arange(time_steps)
-        avg = np.mean(pred, axis=0)[:time_steps]
-        max_val = np.max(pred, axis=0)[:time_steps]
-        min_val = np.min(pred, axis=0)[:time_steps]
+        # Crear rango de horas
+        hours = np.arange(pred.shape[1])
+        
+        # Calcular estadísticas
+        avg = np.mean(pred, axis=0)
+        max_val = np.max(pred, axis=0)
+        min_val = np.min(pred, axis=0)
         
         # Gráfico principal con colores mejorados
-        ax.fill_between(hours, min_val, max_val, color='#4a8bc9', alpha=0.2, label='Rango min-max')
-        ax.plot(hours, avg, color='#e63946', linewidth=2.5, marker='o', markersize=8, label='Promedio horario')
+        ax.fill_between(hours, min_val, max_val, color='#4a8bc9', alpha=0.2, 
+                       label='Rango de predicción')
+        ax.plot(hours, avg, color='#e63946', linewidth=2.5, 
+               marker='o', markersize=6, label='Predicción promedio')
         
-        # Personalización con mejor contraste
-        ax.set_xticks(np.arange(0, time_steps, 3))
-        ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], 
+        # Líneas de referencia para niveles de radiación
+        ax.axhline(100, color='#ff9f1c', linestyle='--', alpha=0.7, 
+                  label='Límite nublado (100 W/m²)')
+        ax.axhline(300, color='#2ec4b6', linestyle='--', alpha=0.7, 
+                  label='Límite parcialmente nublado (300 W/m²)')
+        ax.axhline(600, color='#e71d36', linestyle='--', alpha=0.7, 
+                  label='Límite soleado (600 W/m²)')
+        
+        # Personalización del gráfico
+        ax.set_xticks(np.arange(0, len(hours), 3))
+        ax.set_xticklabels([f"{h}h" for h in range(0, len(hours), 3)], 
                           rotation=45, ha='right')
-        ax.set_xlabel('Hora del día', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Horas futuras', fontsize=12, fontweight='bold')
         ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
-        ax.set_title('Distribución Horaria de Radiación', fontsize=14, pad=20, fontweight='bold')
+        ax.set_title('Predicción de Radiación Solar', fontsize=14, pad=20, fontweight='bold')
         
         # Mejorar la legibilidad
-        ax.legend(loc='upper right', framealpha=1)
+        ax.legend(loc='upper right', framealpha=1, bbox_to_anchor=(1.25, 1))
         ax.grid(True, linestyle='--', alpha=0.7)
         
+        # Añadir anotaciones para condiciones solares
+        ax.annotate('Nublado', xy=(0.5, 50), xytext=(0.5, 30),
+                   arrowprops=dict(facecolor='black', shrink=0.05),
+                   ha='center', fontsize=10)
+        ax.annotate('Parc. nublado', xy=(0.5, 200), xytext=(0.5, 220),
+                   arrowprops=dict(facecolor='black', shrink=0.05),
+                   ha='center', fontsize=10)
+        ax.annotate('Soleado', xy=(0.5, 450), xytext=(0.5, 470),
+                   arrowprops=dict(facecolor='black', shrink=0.05),
+                   ha='center', fontsize=10)
+        
         # Ajustar límites para mejor visualización
-        ax.set_ylim(bottom=0)
+        ax.set_ylim(bottom=0, top=max(600, np.max(max_val)*1.1))
+        ax.set_xlim(left=0, right=len(hours)-1)
+        
+        # Añadir sombreado para diferenciar día/noche (ejemplo)
+        for i in range(0, len(hours), 24):
+            ax.axvspan(i+18, i+24, color='#333333', alpha=0.1, label='Noche' if i==0 else "")
+            ax.axvspan(i, i+6, color='#333333', alpha=0.1)
         
         plt.tight_layout()
         return fig
         
+    except Exception as e:
+        st.error(f"Error al generar el gráfico: {str(e)}")
+        return plt.figure()        
     except Exception as e:
         st.error(f"Error al generar el gráfico: {str(e)}")
         return plt.figure()

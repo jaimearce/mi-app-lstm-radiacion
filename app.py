@@ -30,7 +30,7 @@ def set_custom_style():
         }}
         .stApp {{
             background: linear-gradient(rgba(0, 0, 0, 0.7), 
-                        url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
+            url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -176,43 +176,48 @@ def create_sequences(data, steps):
         y.append(data[i])
     return np.array(X), np.array(y)
 
-def plot_heatmap_prediction(pred, time_steps=None, cmap='YlOrRd', scaler=None):
+def plot_radiation_area(pred, time_steps=24):
     """
-    Genera un mapa de calor solo para las predicciones.
-    
-    Parámetros:
-    - pred: Array de predicciones (1D o 2D).
-    - time_steps: Opcional. Número de pasos de tiempo para remodelar (si pred es 1D).
-    - cmap: Paleta de colores (ej. 'viridis', 'plasma', 'YlOrRd').
-    - scaler: Objeto scaler para inversión de normalización (opcional).
+    Gráfico de área profesional para radiación solar
+    Args:
+        pred: Array de predicciones (1D o 2D)
+        time_steps: Horas a mostrar (default 24)
     """
-    fig, ax = plt.subplots(figsize=(12, 4))
+    plt.style.use('seaborn-darkgrid')
+    fig, ax = plt.subplots(figsize=(12, 6))
     
-    # Convertir a matriz 2D si es necesario
-    if pred.ndim == 1 and time_steps is not None:
+    # Asegurar formato 2D [días, horas]
+    if pred.ndim == 1:
         pred = pred.reshape(-1, time_steps)
     
-    # Invertir normalización si se proporciona scaler
-    if scaler is not None:
-        pred = scaler.inverse_transform(pred)
+    # Calcular estadísticas
+    hours = np.arange(time_steps)
+    avg = np.mean(pred, axis=0)
+    max_val = np.max(pred, axis=0)
+    min_val = np.min(pred, axis=0)
     
-    # Mapa de calor con rango de color ajustado
-    im = ax.imshow(pred, aspect='auto', cmap=cmap, 
-                  interpolation='nearest',
-                  vmin=0,  # Valor mínimo para radiación solar
-                  vmax=1000)  # Valor máximo esperado
+    # Gráfico principal
+    ax.fill_between(hours, min_val, max_val, color='#FFD700', alpha=0.2, label='Rango min-max')
+    ax.plot(hours, avg, color='#FF8C00', linewidth=3, marker='o', label='Promedio horario')
     
     # Personalización
-    ax.set_title("Mapa de Calor: Predicción de Radiación Solar", fontsize=14, pad=15)
-    ax.set_xlabel("Pasos de Tiempo (horas)", fontsize=12)
-    ax.set_ylabel("Días de Predicción", fontsize=12)
+    ax.set_xticks(np.arange(0, time_steps, 3))
+    ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], rotation=45)
+    ax.set_xlabel('Hora del día', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
+    ax.set_title('Predicción de Radiación Solar Horaria', fontsize=14, pad=20, fontweight='bold')
     
-    # Barra de color mejorada
-    cbar = fig.colorbar(im, ax=ax)
-    cbar.set_label('Radiación Solar (W/m²)', fontsize=12)
+    # Elementos adicionales
+    ax.legend(loc='upper right')
+    ax.grid(True, linestyle='--', alpha=0.3)
     
-    # Añadir líneas de división para mejor legibilidad
-    ax.grid(which='minor', color='w', linestyle='-', linewidth=0.5)
+    # Destacar valor máximo
+    max_hour = np.argmax(avg)
+    ax.annotate(f'Max: {avg[max_hour]:.1f} W/m²',
+               xy=(max_hour, avg[max_hour]),
+               xytext=(max_hour+2, avg[max_hour]*0.9),
+               arrowprops=dict(arrowstyle='->', color='red'),
+               fontsize=10)
     
     plt.tight_layout()
     return fig
@@ -472,10 +477,11 @@ with tab2:
                      help="Proporción de la varianza explicada por el modelo (0-1)")
         
         # Gráfico de resultados mejorado
-        st.subheader("Comparación Visual")
-        fig = plot_heatmap_prediction(y_pred_inv, time_steps=n_steps,cmap='plasma',scaler=st.session_state.get("scaler"))
-        st.pyplot(fig)
         
+        st.subheader("Distribución Horaria de Radiación")
+        fig = plot_radiation_area(y_pred_inv, time_steps=n_steps)
+        st.pyplot(fig)
+                
         # Recomendaciones basadas en la predicción
         st.subheader("Recomendaciones para Sistemas Solares")
         avg_next_6h = np.mean(y_pred_inv[:6]) if len(y_pred_inv) >= 6 else np.mean(y_pred_inv)

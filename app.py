@@ -431,7 +431,7 @@ with tab2:
         
         # Gráfico de resultados mejorado
         st.subheader("Comparación Visual")
-        fig = plot_results(y_inv, y_pred_inv, y_ma, y_lr, n_steps)
+        fig = plot_heatmap_prediction(y_pred_inv, time_steps=n_steps, cmap='plasma')
         st.pyplot(fig)
         
         # Recomendaciones basadas en la predicción

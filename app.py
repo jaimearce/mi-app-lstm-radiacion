@@ -80,18 +80,19 @@ def set_custom_style():
 
         /* Ajuste para que el texto del select no se corte */
         .stSelectbox>div>div>div {
-            min-width: 300px !important;
+            min-width: 320px !important;
             max-width: 100%;
-            padding-left: 12px !important;
-            padding-right: 12px !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
             white-space: nowrap !important;
             overflow: visible !important;
             text-overflow: clip !important;
         }
 
         .stSelectbox>div>div>div>div>input {
-            min-width: 280px !important;
-            padding-left: 12px !important;
+            min-width: 300px !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
             white-space: nowrap !important;
             overflow: visible !important;
             text-overflow: clip !important;

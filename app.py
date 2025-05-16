@@ -19,7 +19,7 @@ st.set_page_config(
     initial_sidebar_state='expanded'
 )
 
-# Estilos personalizados con fondo de pantalla profesional
+# Estilos 
 def set_custom_style():
     st.markdown(f"""
     <style>
@@ -237,11 +237,12 @@ def show_prediction_card(title, value, delta=None, interpretation=""):
 
 def plot_radiation_area(pred, time_steps=24):
     """
-    Gráfico profesional mejorado para radiación solar con mejor contraste y diseño
+    Gráfico para radiación solar 
     """
     try:
-        # Configuración de estilo con mejor contraste
-        plt.style.use('seaborn-whitegrid')
+        # Estilo válido
+        plt.style.use('seaborn-v0_8-whitegrid')  # 'ggplot' 
+        
         plt.rcParams.update({
             'axes.facecolor': '#f0f2f6',
             'figure.facecolor': '#f0f2f6',
@@ -252,74 +253,19 @@ def plot_radiation_area(pred, time_steps=24):
             'ytick.color': '#333333',
             'grid.color': '#dddddd'
         })
-        
-        # Crear figura con tamaño adecuado
+
         fig, ax = plt.subplots(figsize=(12, 6))
-        
-        # Asegurar que los datos tengan la forma correcta
-        if pred.ndim == 1:
-            pred = pred.reshape(1, -1)
-        
-        # Limitar al número de pasos de tiempo solicitados
-        if pred.shape[1] > time_steps:
-            pred = pred[:, :time_steps]
-        
-        # Crear rango de horas
-        hours = np.arange(pred.shape[1])
-        
-        # Calcular estadísticas
-        avg = np.mean(pred, axis=0)
-        max_val = np.max(pred, axis=0)
-        min_val = np.min(pred, axis=0)
-        
-        # Gráfico principal con colores mejorados
-        ax.fill_between(hours, min_val, max_val, color='#4a8bc9', alpha=0.2, 
-                       label='Rango de predicción')
-        ax.plot(hours, avg, color='#e63946', linewidth=2.5, 
-               marker='o', markersize=6, label='Predicción promedio')
-        
-        # Líneas de referencia para niveles de radiación
-        ax.axhline(100, color='#ff9f1c', linestyle='--', alpha=0.7, 
-                  label='Límite nublado (100 W/m²)')
-        ax.axhline(300, color='#2ec4b6', linestyle='--', alpha=0.7, 
-                  label='Límite parcialmente nublado (300 W/m²)')
-        ax.axhline(600, color='#e71d36', linestyle='--', alpha=0.7, 
-                  label='Límite soleado (600 W/m²)')
-        
-        # Personalización del gráfico
-        ax.set_xticks(np.arange(0, len(hours), 3))
-        ax.set_xticklabels([f"{h}h" for h in range(0, len(hours), 3)], 
-                          rotation=45, ha='right')
-        ax.set_xlabel('Horas futuras', fontsize=12, fontweight='bold')
-        ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
-        ax.set_title('Predicción de Radiación Solar', fontsize=14, pad=20, fontweight='bold')
-        
-        # Mejorar la legibilidad
-        ax.legend(loc='upper right', framealpha=1, bbox_to_anchor=(1.25, 1))
-        ax.grid(True, linestyle='--', alpha=0.7)
-        
-        # Añadir anotaciones para condiciones solares
-        ax.annotate('Nublado', xy=(0.5, 50), xytext=(0.5, 30),
-                   arrowprops=dict(facecolor='black', shrink=0.05),
-                   ha='center', fontsize=10)
-        ax.annotate('Parc. nublado', xy=(0.5, 200), xytext=(0.5, 220),
-                   arrowprops=dict(facecolor='black', shrink=0.05),
-                   ha='center', fontsize=10)
-        ax.annotate('Soleado', xy=(0.5, 450), xytext=(0.5, 470),
-                   arrowprops=dict(facecolor='black', shrink=0.05),
-                   ha='center', fontsize=10)
-        
-        # Ajustar límites para mejor visualización
-        ax.set_ylim(bottom=0, top=max(600, np.max(max_val)*1.1))
-        ax.set_xlim(left=0, right=len(hours)-1)
-        
-        # Añadir sombreado para diferenciar día/noche (ejemplo)
-        for i in range(0, len(hours), 24):
-            ax.axvspan(i+18, i+24, color='#333333', alpha=0.1, label='Noche' if i==0 else "")
-            ax.axvspan(i, i+6, color='#333333', alpha=0.1)
-        
-        plt.tight_layout()
-        return fig
+        ax.plot(pred[:time_steps], marker='o', linestyle='-', color='#007ACC', label='Predicción')
+        ax.fill_between(range(time_steps), pred[:time_steps], alpha=0.2, color='#007ACC')
+        ax.set_title("Predicción de Radiación Solar (Próximas Horas)")
+        ax.set_xlabel("Horas")
+        ax.set_ylabel("Radiación Solar (W/m²)")
+        ax.grid(True)
+        ax.legend()
+        st.pyplot(fig)
+
+    except Exception as e:
+        st.error(f"Error al generar el gráfico: {e}")
         
     except Exception as e:
         st.error(f"Error al generar el gráfico: {str(e)}")
@@ -393,7 +339,7 @@ with tab1:
             'Número de pasos hacia atrás (lookback)',
             options=[1, 6, 12, 24, 48, 72],
             index=3,
-            help="Determina cuántos puntos anteriores usará el modelo para cada predicción"
+            help="Determina cuántos puntos anteriores usará el modelo para cada predicción de 1 - 100"
         )
         
         # Mostrar vista previa de datos

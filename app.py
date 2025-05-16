@@ -25,7 +25,7 @@ def set_custom_style():
     <style>
         /* Fondo principal con imagen y overlay oscuro */
         .main {{
-            background-color: rgba(0, 0, 0, 0.01);
+            background-color: rgba(149, 232, 29, 0.01);
         }}
         .stApp {{
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -45,7 +45,7 @@ def set_custom_style():
         
         /* Texto general */
         .stMarkdown, .stText, .css-1aumxhk {{
-            color: #f0f0f0 !important;
+            color: #ffffff !important;
         }}
         
         /* Contenedores principales */

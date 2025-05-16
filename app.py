@@ -50,7 +50,7 @@ def set_custom_style():
         
         /* Contenedores principales */
         .block-container {{
-            background-color: rgba(0, 43, 54, 0.85) !important;  /* Azul oscuro semitransparente */
+            background-color: rgba(0, 43, 54, 0.05) !important;  /* Azul oscuro semitransparente */
             border-radius: 10px;
             padding: 1.5rem;
             margin-bottom: 1rem;
@@ -247,58 +247,62 @@ def show_prediction_card(title, value, delta=None, interpretation=""):
 def plot_radiation_area(pred, time_steps=24):
     """
     Gráfico de área profesional para radiación solar
-    Args:
-        pred: Array de predicciones (1D o 2D)
-        time_steps: Horas a mostrar (default 24)
     """
-    # Configuración de estilo con fallback
-    available_styles = plt.style.available
-    if 'seaborn-darkgrid' in available_styles:
-        plt.style.use('seaborn-darkgrid')
-    elif 'seaborn' in available_styles:
-        plt.style.use('seaborn')
-    else:
-        plt.style.use('default')
-    
-    fig, ax = plt.subplots(figsize=(12, 6))
-    
-    # Asegurar formato 2D [días, horas]
-    if pred.ndim == 1:
-        pred = pred.reshape(-1, time_steps)
-    
     try:
-        # Calcular estadísticas
+        # Configuración de estilo con mejor contraste
+        plt.style.use('seaborn-whitegrid')
+        plt.rcParams.update({
+            'axes.facecolor': '#f5f5f5',
+            'figure.facecolor': '#f5f5f5',
+            'axes.edgecolor': '#333333',
+            'axes.labelcolor': '#333333',
+            'text.color': '#333333',
+            'xtick.color': '#333333',
+            'ytick.color': '#333333'
+        })
+        
+        fig, ax = plt.subplots(figsize=(12, 6))
+        
+        # Asegurar que los datos tengan la forma correcta
+        if pred.ndim == 1:
+            if len(pred) < time_steps:
+                time_steps = len(pred)
+            pred = pred[:time_steps].reshape(1, -1)
+        
+        # Verificar dimensiones
+        if pred.shape[1] < time_steps:
+            time_steps = pred.shape[1]
+        
         hours = np.arange(time_steps)
-        avg = np.mean(pred, axis=0)
-        max_val = np.max(pred, axis=0)
-        min_val = np.min(pred, axis=0)
+        avg = np.mean(pred, axis=0)[:time_steps]
+        max_val = np.max(pred, axis=0)[:time_steps]
+        min_val = np.min(pred, axis=0)[:time_steps]
         
-        # Gráfico principal
-        ax.fill_between(hours, min_val, max_val, color='#FFD700', alpha=0.2, label='Rango min-max')
-        ax.plot(hours, avg, color='#FF8C00', linewidth=3, marker='o', label='Promedio horario')
+        # Gráfico principal con colores mejorados
+        ax.fill_between(hours, min_val, max_val, color='#4a8bc9', alpha=0.2, label='Rango min-max')
+        ax.plot(hours, avg, color='#e63946', linewidth=2.5, marker='o', markersize=8, label='Promedio horario')
         
-        # Personalización
+        # Personalización con mejor contraste
         ax.set_xticks(np.arange(0, time_steps, 3))
-        ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], rotation=45)
+        ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], 
+                          rotation=45, ha='right')
         ax.set_xlabel('Hora del día', fontsize=12, fontweight='bold')
         ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
-        ax.set_title('Predicción de Radiación Solar Horaria', fontsize=14, pad=20, fontweight='bold')
+        ax.set_title('Distribución Horaria de Radiación', fontsize=14, pad=20, fontweight='bold')
         
-        # Elementos adicionales
-        ax.legend(loc='upper right')
-        ax.grid(True, linestyle='--', alpha=0.3)
+        # Mejorar la legibilidad
+        ax.legend(loc='upper right', framealpha=1)
+        ax.grid(True, linestyle='--', alpha=0.7)
         
-        # Destacar valor máximo
-        if len(avg) > 0:
-            max_hour = np.argmax(avg)
-            ax.annotate(f'Max: {avg[max_hour]:.1f} W/m²',
-                      xy=(max_hour, avg[max_hour]),
-                      xytext=(max_hour+2, avg[max_hour]*0.9),
-                      arrowprops=dict(arrowstyle='->', color='red'),
-                      fontsize=10)
+        # Ajustar límites para mejor visualización
+        ax.set_ylim(bottom=0)
         
         plt.tight_layout()
         return fig
+        
+    except Exception as e:
+        st.error(f"Error al generar el gráfico: {str(e)}")
+        return plt.figure()
         
     except Exception as e:
         st.error(f"Error al generar el gráfico: {str(e)}")

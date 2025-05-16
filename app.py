@@ -22,91 +22,77 @@ st.set_page_config(
 
 # Estilos 
 def set_custom_style():
-    st.markdown(f"""
+    st.markdown("""
     <style>
-        /* Fondo principal */
-        .stApp {{
-            background: url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        /* Fondo degradado al estilo login profesional */
+        .stApp {
+            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
             background-attachment: fixed;
-        }}
+        }
 
-        /* Tipografía global */
-        body, p, li, span, div, h1, h2, h3, h4, h5, h6, label {{
-            color: #1B1F23 !important;
-            font-family: 'Segoe UI', sans-serif !important;
-        }}
+        /* Contenedor tipo tarjeta blanca */
+        .block-container {
+            background-color: rgba(255, 255, 255, 0.96);
+            padding: 2rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
 
-        /* Bloques principales */
-        .block-container {{
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }}
+        /* Títulos elegantes */
+        h1, h2, h3, h4 {
+            color: #003366;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 600;
+        }
 
-        /* Botones */
-        .stButton>button {{
-            background-color: #007ACC;
-            color: white !important;
-            border-radius: 6px;
-            padding: 0.5rem 1.2rem;
+        /* Texto general */
+        p, label, span {
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+        }
+
+        /* Botón principal */
+        .stButton>button {
+            background-color: #2196F3;
+            color: white;
             border: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }}
-        .stButton>button:hover {{
-            background-color: #005A99;
-            transform: translateY(-1px);
-        }}
-
-        /* Métricas */
-        .stMetric {{
-            background-color: #E6F0FA;
+            padding: 0.6rem 1.4rem;
             border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }}
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-        /* DataFrames y alertas */
-        .stDataFrame, .stAlert {{
-            background-color: #FAFAFA;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }}
+        .stButton>button:hover {
+            background-color: #1976D2;
+            transform: scale(1.05);
+        }
 
-        /* Inputs */
-        .stSelectbox, .stTextInput, .stFileUploader {{
-            background-color: #ffffff !important;
-            border: 1px solid #ccc;
+        /* Inputs limpios */
+        .stTextInput>div>div>input,
+        .stSelectbox>div>div>div>div {
+            background-color: #ffffffcc;
             border-radius: 6px;
-        }}
+            border: 1px solid #bbb;
+            padding: 0.4rem 0.8rem;
+        }
 
-        /* Barra lateral */
-        .css-1aumxhk {{
-            background-color: #f0f2f6;
-        }}
+        /* Tablas */
+        .stDataFrame {
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
 
-        /* Hover */
-        .block-container:hover {{
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }}
+        /* Sidebar */
+        section[data-testid="stSidebar"] {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
 
-        /* Compatibilidad móvil */
-        @media (max-width: 768px) {{
-            body, p, li, span, div {{
-                color: #1B1F23 !important;
-            }}
-        }}
     </style>
     """, unsafe_allow_html=True)
-
 
 set_custom_style()
 

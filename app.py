@@ -70,7 +70,7 @@ def set_custom_style():
         }}
         /* Contenedores principales con fondo semitransparente */
         .block-container {{
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
             padding: 2rem;
             margin-bottom: 1rem;
@@ -111,16 +111,15 @@ with st.expander("Cómo usar esta app", expanded=False):
 # --------------------------------------------
 # Sección de Créditos Académicos
 # --------------------------------------------
-with st.expander("Cómo usar esta app", expanded=False):
+with st.expander("Creditos Academicos", expanded=False):
     st.markdown("""
----
+
 **Software desarrollado para la Universidad Francisco de Paula Santander**  
 **Curso Integrador II - Ingeniería Electrónica**  
 **Autores**: Jaime Arce, Johan Salazar, Angel Hernández, Frank Portillo  
 **Asesor**: MSc. IE. Darwin O. Cardoso S. | **Coasesora**: MSc. IE. Oriana A. Lopez B.  
 **Año**: 2025  
 **Versión**: 2.1.0 | Última actualización: """ + datetime.now().strftime("%Y-%m-%d") + """  
----
 """)
 
 # --------------------------------------------

@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state='expanded'
 )
 
-# Estilos personalizados
+# Estilos personalizados con fondo de pantalla profesional
 def set_custom_style():
     st.markdown(f"""
     <style>
@@ -28,11 +28,16 @@ def set_custom_style():
             background-color: #f5f9ff;
         }}
         .stApp {{
-            background-image: linear-gradient(to bottom, #ffffff, #f0f7ff);
+            background-image: url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }}
         h1, h2, h3 {{
             color: #003366;
             font-family: 'Arial', sans-serif;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
         }}
         .stButton>button {{
             background-color: #0066cc;
@@ -46,20 +51,33 @@ def set_custom_style():
             color: white;
         }}
         .stMetric {{
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }}
         .stAlert {{
             border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
         }}
         .stDataFrame {{
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: rgba(255, 255, 255, 0.9);
         }}
         .css-1aumxhk {{
             background-color: #0066cc;
+        }}
+        /* Contenedores principales con fondo semitransparente */
+        .block-container {{
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+        }}
+        /* Mejorar legibilidad del texto sobre el fondo */
+        .stMarkdown, .stText {{
+            color: #333333;
         }}
     </style>
     """, unsafe_allow_html=True)
@@ -369,7 +387,7 @@ with tab2:
                         delta_text = f"{delta_pct:.1f}%"
                         delta_color = "inverse" if delta_pct < 0 else "normal"
                     else:
-                        delta_text = "N/A"
+                        delta_text = " "
                         delta_color = "off"
                     
                     # Mostrar tarjeta de predicción

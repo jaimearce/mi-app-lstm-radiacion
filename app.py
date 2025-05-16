@@ -28,9 +28,7 @@ def set_custom_style():
             background-color: #f5f9ff;
         }}
         .stApp {{
-            position: relative;
-            background: linear-gradient(rgba(150, 200, 150, 0.45), rgba(150, 200, 150, 0.45)), 
-                        url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
+            background-image: url("https://raw.githubusercontent.com/jaimearce/mi-app-lstm-radiacion/main/fondo.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

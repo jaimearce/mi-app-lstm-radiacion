@@ -183,45 +183,58 @@ def plot_radiation_area(pred, time_steps=24):
         pred: Array de predicciones (1D o 2D)
         time_steps: Horas a mostrar (default 24)
     """
-    plt.style.use('seaborn-darkgrid')
+    # Configuración de estilo con fallback
+    available_styles = plt.style.available
+    if 'seaborn-v0_8-darkgrid' in available_styles:
+        plt.style.use('seaborn-v0_8-darkgrid')
+    elif 'seaborn-darkgrid' in available_styles:
+        plt.style.use('seaborn-darkgrid')
+    else:
+        plt.style.use('ggplot')  # Estilo alternativo
+    
     fig, ax = plt.subplots(figsize=(12, 6))
     
     # Asegurar formato 2D [días, horas]
     if pred.ndim == 1:
         pred = pred.reshape(-1, time_steps)
     
-    # Calcular estadísticas
-    hours = np.arange(time_steps)
-    avg = np.mean(pred, axis=0)
-    max_val = np.max(pred, axis=0)
-    min_val = np.min(pred, axis=0)
-    
-    # Gráfico principal
-    ax.fill_between(hours, min_val, max_val, color='#FFD700', alpha=0.2, label='Rango min-max')
-    ax.plot(hours, avg, color='#FF8C00', linewidth=3, marker='o', label='Promedio horario')
-    
-    # Personalización
-    ax.set_xticks(np.arange(0, time_steps, 3))
-    ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], rotation=45)
-    ax.set_xlabel('Hora del día', fontsize=12, fontweight='bold')
-    ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
-    ax.set_title('Predicción de Radiación Solar Horaria', fontsize=14, pad=20, fontweight='bold')
-    
-    # Elementos adicionales
-    ax.legend(loc='upper right')
-    ax.grid(True, linestyle='--', alpha=0.3)
-    
-    # Destacar valor máximo
-    max_hour = np.argmax(avg)
-    ax.annotate(f'Max: {avg[max_hour]:.1f} W/m²',
-               xy=(max_hour, avg[max_hour]),
-               xytext=(max_hour+2, avg[max_hour]*0.9),
-               arrowprops=dict(arrowstyle='->', color='red'),
-               fontsize=10)
-    
-    plt.tight_layout()
-    return fig
-def interpret_radiation(value):
+    try:
+        # Calcular estadísticas
+        hours = np.arange(time_steps)
+        avg = np.mean(pred, axis=0)
+        max_val = np.max(pred, axis=0)
+        min_val = np.min(pred, axis=0)
+        
+        # Gráfico principal
+        ax.fill_between(hours, min_val, max_val, color='#FFD700', alpha=0.2, label='Rango min-max')
+        ax.plot(hours, avg, color='#FF8C00', linewidth=3, marker='o', label='Promedio horario')
+        
+        # Personalización
+        ax.set_xticks(np.arange(0, time_steps, 3))
+        ax.set_xticklabels([f"{h}:00" for h in range(0, time_steps, 3)], rotation=45)
+        ax.set_xlabel('Hora del día', fontsize=12, fontweight='bold')
+        ax.set_ylabel('Radiación Solar (W/m²)', fontsize=12, fontweight='bold')
+        ax.set_title('Predicción de Radiación Solar Horaria', fontsize=14, pad=20, fontweight='bold')
+        
+        # Elementos adicionales
+        ax.legend(loc='upper right')
+        ax.grid(True, linestyle='--', alpha=0.3)
+        
+        # Destacar valor máximo
+        if len(avg) > 0:
+            max_hour = np.argmax(avg)
+            ax.annotate(f'Max: {avg[max_hour]:.1f} W/m²',
+                      xy=(max_hour, avg[max_hour]),
+                      xytext=(max_hour+2, avg[max_hour]*0.9),
+                      arrowprops=dict(arrowstyle='->', color='red'),
+                      fontsize=10)
+        
+        plt.tight_layout()
+        return fig
+        
+    except Exception as e:
+        st.error(f"Error al generar el gráfico: {str(e)}")
+        return plt.figure()  # Devuelve figura vacía en caso de errordef interpret_radiation(value):
     """Traduce el valor de radiación a condiciones solares"""
     if isinstance(value, (np.ndarray, list)):
         value = value[0] if len(value) > 0 else 0

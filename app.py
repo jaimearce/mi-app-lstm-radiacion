@@ -35,7 +35,7 @@ def set_custom_style():
             background-attachment: fixed;
         }}
         h1, h2, h3 {{
-            color: #000000;
+            color: #ffffff;
             font-family: 'Arial', sans-serif;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.99);
         }}
@@ -51,26 +51,26 @@ def set_custom_style():
             color: white;
         }}
         .stMetric {{
-            background-color: rgba(255, 255, 255, 0.10);
+            background-color: rgba(255, 255, 255, 0.050);
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }}
         .stAlert {{
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.10);
+            background-color: rgba(255, 255, 255, 0.050);
         }}
         .stDataFrame {{
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            background-color: rgba(255, 255, 255, 0.10);
+            background-color: rgba(255, 255, 255, 0.050);
         }}
         .css-1aumxhk {{
             background-color: #0066cc;
         }}
         /* Contenedores principales con fondo semitransparente */
         .block-container {{
-            background-color: rgba(255, 255, 255, 0.10);
+            background-color: rgba(255, 255, 255, 0.050);
             border-radius: 10px;
             padding: 2rem;
             margin-bottom: 1rem;

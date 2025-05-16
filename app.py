@@ -69,17 +69,32 @@ def set_custom_style():
             transform: scale(1.05);
         }
 
-        /* Inputs limpios con ancho mínimo para que no se corte el texto */
+        /* Inputs limpios */
         .stTextInput>div>div>input,
         .stSelectbox>div>div>div>div {
             background-color: #ffffffcc;
             border-radius: 6px;
             border: 1px solid #bbb;
             padding: 0.4rem 0.8rem;
-            min-width: 220px;  /* Aumenta el ancho mínimo para que no se corte */
-            white-space: nowrap; /* No permitir salto de línea */
-            overflow: visible;   /* Mostrar todo el texto */
-            text-overflow: clip; /* Evitar puntos suspensivos */
+            min-width: 220px;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: clip;
+        }
+
+        /* Aumentar ancho del selectbox para que el texto no se corte */
+        .stSelectbox>div>div>div {
+            min-width: 280px !important;
+        }
+
+        /* Ajustar el input dentro del select para que ocupe más espacio */
+        .stSelectbox>div>div>div>div {
+            min-width: 280px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
         }
 
         /* Tablas */

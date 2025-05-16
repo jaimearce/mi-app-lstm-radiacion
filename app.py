@@ -35,9 +35,9 @@ def set_custom_style():
             background-attachment: fixed;
         }}
         h1, h2, h3 {{
-            color: #003366;
+            color: #051d00;
             font-family: 'Arial', sans-serif;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.50);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.99);
         }}
         .stButton>button {{
             background-color: #009933;

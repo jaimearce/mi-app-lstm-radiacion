@@ -143,7 +143,7 @@ def create_sequences(data, steps):
         y.append(data[i])
     return np.array(X), np.array(y)
 
-def plot_heatmap_prediction(pred, time_steps=None, cmap='YlOrRd'):
+def plot_heatmap_prediction(pred, time_steps=None, cmap='YlOrRd', scaler=None):
     """
     Genera un mapa de calor solo para las predicciones.
     
@@ -151,29 +151,38 @@ def plot_heatmap_prediction(pred, time_steps=None, cmap='YlOrRd'):
     - pred: Array de predicciones (1D o 2D).
     - time_steps: Opcional. Número de pasos de tiempo para remodelar (si pred es 1D).
     - cmap: Paleta de colores (ej. 'viridis', 'plasma', 'YlOrRd').
+    - scaler: Objeto scaler para inversión de normalización (opcional).
     """
     fig, ax = plt.subplots(figsize=(12, 4))
     
-    # Convertir a matriz 2D si es necesario (ej. para series temporales)
+    # Convertir a matriz 2D si es necesario
     if pred.ndim == 1 and time_steps is not None:
         pred = pred.reshape(-1, time_steps)
     
-    # Mapa de calor
-    im = ax.imshow(pred, aspect='auto', cmap=cmap, interpolation='nearest')
+    # Invertir normalización si se proporciona scaler
+    if scaler is not None:
+        pred = scaler.inverse_transform(pred)
+    
+    # Mapa de calor con rango de color ajustado
+    im = ax.imshow(pred, aspect='auto', cmap=cmap, 
+                  interpolation='nearest',
+                  vmin=0,  # Valor mínimo para radiación solar
+                  vmax=1000)  # Valor máximo esperado
     
     # Personalización
     ax.set_title("Mapa de Calor: Predicción de Radiación Solar", fontsize=14, pad=15)
-    ax.set_xlabel("Pasos de Tiempo", fontsize=12)
-    ax.set_ylabel("Horizonte de Predicción", fontsize=12)
+    ax.set_xlabel("Pasos de Tiempo (horas)", fontsize=12)
+    ax.set_ylabel("Días de Predicción", fontsize=12)
     
-    # Barra de color
+    # Barra de color mejorada
     cbar = fig.colorbar(im, ax=ax)
-    cbar.set_label('Radiación (W/m²)', fontsize=12)
+    cbar.set_label('Radiación Solar (W/m²)', fontsize=12)
+    
+    # Añadir líneas de división para mejor legibilidad
+    ax.grid(which='minor', color='w', linestyle='-', linewidth=0.5)
     
     plt.tight_layout()
-    
     return fig
-
 def interpret_radiation(value):
     """Traduce el valor de radiación a condiciones solares"""
     if isinstance(value, (np.ndarray, list)):
@@ -431,7 +440,7 @@ with tab2:
         
         # Gráfico de resultados mejorado
         st.subheader("Comparación Visual")
-        fig = plot_heatmap_prediction(y_pred_inv, time_steps=n_steps, cmap='plasma')
+        fig = plot_heatmap_prediction(y_pred_inv, time_steps=n_steps,cmap='plasma',scaler=st.session_state.get("scaler"))
         st.pyplot(fig)
         
         # Recomendaciones basadas en la predicción

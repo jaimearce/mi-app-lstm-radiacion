@@ -92,7 +92,7 @@ def set_custom_style():
 
         /* Inputs */
         .stSelectbox, .stTextInput, .stFileUploader {{
-            background-color: #ffffff !important;
+            background-color: #4169E1 !important;
             border: 1px solid #ccc;
             border-radius: 6px;
         }}

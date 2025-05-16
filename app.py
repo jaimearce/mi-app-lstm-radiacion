@@ -76,22 +76,22 @@ def set_custom_style():
             border-radius: 6px;
             border: 1px solid #bbb;
             padding: 0.4rem 0.8rem;
-            min-width: 220px;
-            white-space: nowrap;
-            overflow: visible;
-            text-overflow: clip;
         }
 
-        /* Aumentar ancho del selectbox para que el texto no se corte */
+        /* Ajuste para que el texto del select no se corte */
         .stSelectbox>div>div>div {
-            min-width: 280px !important;
+            min-width: 300px !important;
+            max-width: 100%;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
         }
 
-        /* Ajustar el input dentro del select para que ocupe más espacio */
-        .stSelectbox>div>div>div>div {
+        .stSelectbox>div>div>div>div>input {
             min-width: 280px !important;
-            padding-left: 10px !important;
-            padding-right: 10px !important;
+            padding-left: 12px !important;
             white-space: nowrap !important;
             overflow: visible !important;
             text-overflow: clip !important;
@@ -112,6 +112,7 @@ def set_custom_style():
 
     </style>
     """, unsafe_allow_html=True)
+
 
 set_custom_style()
 

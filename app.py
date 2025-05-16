@@ -11,6 +11,7 @@ from sklearn.preprocessing import MinMaxScaler
 import requests
 from io import StringIO
 from datetime import datetime
+from io import BytesIO, StringIO
 
 # Configuración inicial de la página
 st.set_page_config(
@@ -539,26 +540,26 @@ with tab2:
             )
         
         with col2:
-            # Crear una nueva figura para la descarga
-            download_fig, ax = plt.subplots(figsize=(12, 6))
-            ax.plot(y_pred_inv[:24], color='#0066cc', linestyle='-', linewidth=2)
-            ax.set_title("Predicción de Radiación Solar", fontsize=12)
-            ax.set_xlabel("Horas", fontsize=10)
-            ax.set_ylabel("Radiación (W/m²)", fontsize=10)
-            ax.grid(True, linestyle='--', alpha=0.3)
+            # Crear una figura nueva para la descarga
+            fig_descarga = plt.figure(figsize=(12, 6))
+            plt.plot(y_pred_inv[:24], color='#0066cc', linewidth=2)
+            plt.title("Predicción de Radiación Solar")
+            plt.xlabel("Horas")
+            plt.ylabel("Radiación (W/m²)")
+            plt.grid(True, linestyle='--', alpha=0.3)
             
-            # Convertir la figura a bytes para la descarga
-            buf = BytesIO()
-            download_fig.savefig(buf, format="png", bbox_inches='tight', dpi=300)
-            plt.close(download_fig)
-            buf.seek(0)
+            # Guardar la figura en un buffer de memoria
+            buffer = BytesIO()
+            fig_descarga.savefig(buffer, format="png", dpi=300, bbox_inches='tight')
+            plt.close(fig_descarga)  # Cerrar la figura para liberar memoria
+            buffer.seek(0)  # Rebobinar el buffer al inicio
             
+            # Botón de descarga
             st.download_button(
                 label="Descargar Gráfico",
-                data=buf,
-                file_name='grafico_prediccion.png',
-                mime='image/png',
-                help="Descarga el gráfico como imagen PNG"
+                data=buffer,
+                file_name='prediccion_radiacion.png',
+                mime='image/png'
             )
         
         # Explicación técnica

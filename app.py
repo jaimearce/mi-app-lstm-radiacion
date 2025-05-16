@@ -241,8 +241,10 @@ def plot_radiation_area(pred, time_steps=24):
     Gráfico para radiación solar 
     """
     try:
-        # Estilo válido
         plt.style.use('seaborn-v0_8-whitegrid')
+        
+        # Convertir a 1D si es necesario
+        pred = np.array(pred).flatten()  # Esto asegura 1D
         
         plt.rcParams.update({
             'axes.facecolor': '#f0f2f6',
@@ -256,19 +258,25 @@ def plot_radiation_area(pred, time_steps=24):
         })
 
         fig, ax = plt.subplots(figsize=(12, 6))
+        
+        # Asegurar que los datos sean 1D
         ax.plot(pred[:time_steps], marker='o', linestyle='-', color='#007ACC', label='Predicción')
         ax.fill_between(range(time_steps), pred[:time_steps], alpha=0.2, color='#007ACC')
+        
         ax.set_title("Predicción de Radiación Solar (Próximas Horas)")
         ax.set_xlabel("Horas")
         ax.set_ylabel("Radiación Solar (W/m²)")
         ax.grid(True)
         ax.legend()
         
-        # Cerrar la figura para evitar advertencias
         plt.close(fig)
-        
         return fig
 
+    except Exception as e:
+        st.error(f"Error al generar el gráfico: {e}")
+        fig = plt.figure(figsize=(12, 6))
+        plt.close(fig)
+        return fig
     except Exception as e:
         st.error(f"Error al generar el gráfico: {e}")
         fig = plt.figure(figsize=(12, 6))

@@ -143,22 +143,33 @@ def create_sequences(data, steps):
         y.append(data[i])
     return np.array(X), np.array(y)
 
-def plot_results(real, pred, ma, lr, steps):
-    """Genera el gráfico comparativo con estilo mejorado"""
-    fig, ax = plt.subplots(figsize=(12, 6))
+def plot_heatmap_prediction(pred, time_steps=None, cmap='YlOrRd'):
+    """
+    Genera un mapa de calor solo para las predicciones.
     
-    # Personalización de colores y estilos
-    ax.plot(real, label='Valor Real', color='#1f77b4', linewidth=2, alpha=0.9)
-    ax.plot(pred, label='Predicción LSTM', color='#ff7f0e', linestyle='--', linewidth=2)
-    ax.plot(ma, label=f'Promedio Móvil ({steps} pasos)', color='#2ca02c', alpha=0.7)
-    ax.plot(lr, label='Tendencia Lineal', color='#d62728', alpha=0.7)
+    Parámetros:
+    - pred: Array de predicciones (1D o 2D).
+    - time_steps: Opcional. Número de pasos de tiempo para remodelar (si pred es 1D).
+    - cmap: Paleta de colores (ej. 'viridis', 'plasma', 'YlOrRd').
+    """
+    fig, ax = plt.subplots(figsize=(12, 4))
     
-    # Configuración del gráfico
-    ax.set_title("Comparación: Valores Reales vs Predicciones", fontsize=14, pad=20)
-    ax.set_xlabel("Índice de Tiempo", fontsize=12)
-    ax.set_ylabel("Radiación Solar (W/m²)", fontsize=12)
-    ax.legend(fontsize=10, framealpha=0.9)
-    ax.grid(True, linestyle='--', alpha=0.3)
+    # Convertir a matriz 2D si es necesario (ej. para series temporales)
+    if pred.ndim == 1 and time_steps is not None:
+        pred = pred.reshape(-1, time_steps)
+    
+    # Mapa de calor
+    im = ax.imshow(pred, aspect='auto', cmap=cmap, interpolation='nearest')
+    
+    # Personalización
+    ax.set_title("Mapa de Calor: Predicción de Radiación Solar", fontsize=14, pad=15)
+    ax.set_xlabel("Pasos de Tiempo", fontsize=12)
+    ax.set_ylabel("Horizonte de Predicción", fontsize=12)
+    
+    # Barra de color
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label('Radiación (W/m²)', fontsize=12)
+    
     plt.tight_layout()
     
     return fig

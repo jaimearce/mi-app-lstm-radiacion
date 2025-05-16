@@ -33,19 +33,13 @@ def set_custom_style():
             background-attachment: fixed;
         }}
 
-        /* Tipografía y títulos */
-        h1, h2, h3, h4, h5, h6 {{
+        /* Tipografía global */
+        body, p, li, span, div, h1, h2, h3, h4, h5, h6, label {{
             color: #1B1F23 !important;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', sans-serif !important;
         }}
 
-        /* Texto general */
-        .stMarkdown, .stText, .css-1aumxhk, .css-1v3fvcr {{
-            color: #222222 !important;
-            font-family: 'Segoe UI', sans-serif;
-        }}
-
-        /* Contenedores principales */
+        /* Bloques principales */
         .block-container {{
             background-color: #ffffff;
             border-radius: 12px;
@@ -70,7 +64,7 @@ def set_custom_style():
             transform: translateY(-1px);
         }}
 
-        /* Métricas y cuadros */
+        /* Métricas */
         .stMetric {{
             background-color: #E6F0FA;
             border-radius: 10px;
@@ -78,11 +72,18 @@ def set_custom_style():
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }}
 
-        /* DataFrame y alertas */
+        /* DataFrames y alertas */
         .stDataFrame, .stAlert {{
             background-color: #FAFAFA;
             border-radius: 10px;
             border: 1px solid #ddd;
+        }}
+
+        /* Inputs */
+        .stSelectbox, .stTextInput, .stFileUploader {{
+            background-color: #ffffff !important;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }}
 
         /* Barra lateral */
@@ -90,21 +91,22 @@ def set_custom_style():
             background-color: #f0f2f6;
         }}
 
-        /* Inputs */
-        .stSelectbox, .stTextInput, .stFileUploader {{
-            background-color: #4169E1;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }}
-
-        /* Hover de tarjetas */
+        /* Hover */
         .block-container:hover {{
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
             transition: all 0.3s ease;
         }}
+
+        /* Compatibilidad móvil */
+        @media (max-width: 768px) {{
+            body, p, li, span, div {{
+                color: #1B1F23 !important;
+            }}
+        }}
     </style>
     """, unsafe_allow_html=True)
+
 
 set_custom_style()
 

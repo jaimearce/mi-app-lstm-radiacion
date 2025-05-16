@@ -241,7 +241,7 @@ def plot_radiation_area(pred, time_steps=24):
     """
     try:
         # Estilo válido
-        plt.style.use('seaborn-v0_8-whitegrid')  # 'ggplot' 
+        plt.style.use('seaborn-v0_8-whitegrid')
         
         plt.rcParams.update({
             'axes.facecolor': '#f0f2f6',
@@ -262,21 +262,17 @@ def plot_radiation_area(pred, time_steps=24):
         ax.set_ylabel("Radiación Solar (W/m²)")
         ax.grid(True)
         ax.legend()
-        st.pyplot(fig)
+        
+        # Cerrar la figura para evitar advertencias
+        plt.close(fig)
+        
+        return fig
 
     except Exception as e:
         st.error(f"Error al generar el gráfico: {e}")
-        
-    except Exception as e:
-        st.error(f"Error al generar el gráfico: {str(e)}")
-        return plt.figure()        
-    except Exception as e:
-        st.error(f"Error al generar el gráfico: {str(e)}")
-        return plt.figure()
-        
-    except Exception as e:
-        st.error(f"Error al generar el gráfico: {str(e)}")
-        return plt.figure()
+        fig = plt.figure(figsize=(12, 6))
+        plt.close(fig)
+        return fig
 
 # --------------------------------------------
 # Pestañas Principales
@@ -543,10 +539,18 @@ with tab2:
             )
         
         with col2:
-            # Convertir la figura a bytes antes de la descarga
-            from io import BytesIO
+            # Crear una nueva figura para la descarga
+            download_fig, ax = plt.subplots(figsize=(12, 6))
+            ax.plot(y_pred_inv[:24], color='#0066cc', linestyle='-', linewidth=2)
+            ax.set_title("Predicción de Radiación Solar", fontsize=12)
+            ax.set_xlabel("Horas", fontsize=10)
+            ax.set_ylabel("Radiación (W/m²)", fontsize=10)
+            ax.grid(True, linestyle='--', alpha=0.3)
+            
+            # Convertir la figura a bytes para la descarga
             buf = BytesIO()
-            fig.savefig(buf, format="png")
+            download_fig.savefig(buf, format="png", bbox_inches='tight', dpi=300)
+            plt.close(download_fig)
             buf.seek(0)
             
             st.download_button(

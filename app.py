@@ -109,7 +109,7 @@ def set_custom_style():
 set_custom_style()
 
 # Título principal
-st.title('Predicción de Radiación Solar - ALLSKY_SFC_SW_DWN')
+st.title('Predicción de Radiación Solar')
 
 # --------------------------------------------
 # Sección de Ayuda y Descripción

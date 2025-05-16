@@ -24,7 +24,7 @@ st.set_page_config(
 def set_custom_style():
     st.markdown("""
     <style>
-        /* Fondo degradado al estilo login  */
+        /* Fondo degradado al estilo login profesional */
         .stApp {
             background: linear-gradient(to bottom right, #4facfe, #00f2fe);
             background-attachment: fixed;
@@ -40,7 +40,7 @@ def set_custom_style():
             margin: auto;
         }
 
-        /* Títulos */
+        /* Títulos elegantes */
         h1, h2, h3, h4 {
             color: #003366;
             font-family: 'Segoe UI', sans-serif;
@@ -70,46 +70,61 @@ def set_custom_style():
         }
 
         /* Inputs limpios */
-        .stTextInput>div>div>input,
-        .stSelectbox>div>div>div>div {
+        .stTextInput>div>div>input {
             background-color: #ffffffcc;
             border-radius: 6px;
             border: 1px solid #bbb;
             padding: 0.4rem 0.8rem;
         }
 
-        /* selecbox */
-        .stSelectbox>div>div>div {
+        /* SOLUCIÓN COMPLETA PARA EL SELECTBOX */
+        /* Contenedor principal del select */
+        div[data-baseweb="select"] > div:first-child {
+            background-color: #ffffffcc !important;
+            border-radius: 6px !important;
+            border: 1px solid #bbb !important;
             min-width: 100% !important;
-            width: auto !important;
-            max-width: 100% !important;
-            white-space: normal !important;
-            overflow: visible !important;
-            text-overflow: unset !important;
+            padding: 0.4rem 0.8rem !important;
         }
         
-        .stSelectbox>div>div>div>div>input {
-            min-width: 100% !important;
+        /* Input del select */
+        div[data-baseweb="select"] input {
+            padding: 0.4rem 0 !important;
+            font-family: 'Segoe UI', sans-serif !important;
+            color: #333 !important;
             width: 100% !important;
-            white-space: normal !important;
-            overflow: visible !important;
-            text-overflow: unset !important;
         }
         
-        /* Contenedor del dropdown */
-        .stSelectbox>div>div>div>div>div>div {
+        /* Dropdown del select */
+        div[role="listbox"] {
             min-width: 100% !important;
             width: auto !important;
+            background-color: white !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
         }
         
         /* Opciones del dropdown */
-        .stSelectbox [role="listbox"] div {
+        div[role="option"] {
+            padding: 10px 15px !important;
+            font-family: 'Segoe UI', sans-serif !important;
+            color: #333 !important;
             white-space: normal !important;
-            word-wrap: break-word !important;
         }
-
-        /* Placeholder del SelectBox */
-        .stSelectbox>div>div>div>div>div>span {
+        
+        /* Opción seleccionada */
+        div[role="option"][aria-selected="true"] {
+            background-color: #e6f2ff !important;
+            color: #003366 !important;
+        }
+        
+        /* Opción al hacer hover */
+        div[role="option"]:hover {
+            background-color: #f0f7ff !important;
+        }
+        
+        /* Placeholder */
+        div[data-baseweb="select"] div[aria-live] {
             color: #666 !important;
             font-style: italic !important;
         }
@@ -129,13 +144,18 @@ def set_custom_style():
 
         /* Responsive para móviles */
         @media (max-width: 768px) {
-            .stSelectbox>div {
-                width: 100% !important;
+            /* Ajuste general para contenedores */
+            .block-container {
+                padding: 1rem !important;
+            }
+            
+            /* Ajuste específico para el selectbox en móviles */
+            div[data-baseweb="select"] > div:first-child {
+                padding: 0.3rem 0.6rem !important;
             }
         }
     </style>
     """, unsafe_allow_html=True)
-
 
 set_custom_style()
 

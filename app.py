@@ -57,7 +57,7 @@ def set_custom_style():
 
         /* Botones */
         .stButton>button {{
-            background-color: #007ACC !important;
+            background-color: #007ACC;
             color: white !important;
             border-radius: 6px;
             padding: 0.5rem 1.2rem;
@@ -66,13 +66,13 @@ def set_custom_style():
             transition: all 0.3s ease;
         }}
         .stButton>button:hover {{
-            background-color: #005A99 !important;
+            background-color: #005A99;
             transform: translateY(-1px);
         }}
 
         /* Métricas y cuadros */
         .stMetric {{
-            background-color: #E6F0FA !important;
+            background-color: #E6F0FA;
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -80,19 +80,19 @@ def set_custom_style():
 
         /* DataFrame y alertas */
         .stDataFrame, .stAlert {{
-            background-color: #FAFAFA !important;
+            background-color: #FAFAFA;
             border-radius: 10px;
             border: 1px solid #ddd;
         }}
 
         /* Barra lateral */
         .css-1aumxhk {{
-            background-color: #f0f2f6 !important;
+            background-color: #f0f2f6;
         }}
 
         /* Inputs */
         .stSelectbox, .stTextInput, .stFileUploader {{
-            background-color: #4169E1 !important;
+            background-color: #4169E1;
             border: 1px solid #ccc;
             border-radius: 6px;
         }}

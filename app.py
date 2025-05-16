@@ -24,13 +24,14 @@ st.set_page_config(
 def set_custom_style():
     st.markdown("""
     <style>
-        /* Fondo degradado al estilo login profesional */
+        /* ===== ESTILOS BASE (originales) ===== */
+        /* Fondo degradado */
         .stApp {
             background: linear-gradient(to bottom right, #4facfe, #00f2fe);
             background-attachment: fixed;
         }
 
-        /* Contenedor tipo tarjeta blanca */
+        /* Contenedor principal */
         .block-container {
             background-color: rgba(255, 255, 255, 0.96);
             padding: 2rem 2rem;
@@ -40,7 +41,7 @@ def set_custom_style():
             margin: auto;
         }
 
-        /* Títulos elegantes */
+        /* Títulos */
         h1, h2, h3, h4 {
             color: #003366;
             font-family: 'Segoe UI', sans-serif;
@@ -53,7 +54,7 @@ def set_custom_style():
             color: #333;
         }
 
-        /* Botón principal */
+        /* Botones */
         .stButton>button {
             background-color: #2196F3;
             color: white;
@@ -63,13 +64,12 @@ def set_custom_style():
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
         .stButton>button:hover {
             background-color: #1976D2;
             transform: scale(1.05);
         }
 
-        /* Inputs limpios */
+        /* Inputs */
         .stTextInput>div>div>input {
             background-color: #ffffffcc;
             border-radius: 6px;
@@ -77,8 +77,7 @@ def set_custom_style():
             padding: 0.4rem 0.8rem;
         }
 
-        /* SOLUCIÓN COMPLETA PARA EL SELECTBOX */
-        /* Contenedor principal del select */
+        /* SelectBox (solución previa) */
         div[data-baseweb="select"] > div:first-child {
             background-color: #ffffffcc !important;
             border-radius: 6px !important;
@@ -86,47 +85,15 @@ def set_custom_style():
             min-width: 100% !important;
             padding: 0.4rem 0.8rem !important;
         }
-        
-        /* Input del select */
         div[data-baseweb="select"] input {
             padding: 0.4rem 0 !important;
             font-family: 'Segoe UI', sans-serif !important;
             color: #333 !important;
             width: 100% !important;
         }
-        
-        /* Dropdown del select */
         div[role="listbox"] {
             min-width: 100% !important;
-            width: auto !important;
             background-color: white !important;
-            border-radius: 6px !important;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-        }
-        
-        /* Opciones del dropdown */
-        div[role="option"] {
-            padding: 10px 15px !important;
-            font-family: 'Segoe UI', sans-serif !important;
-            color: #333 !important;
-            white-space: normal !important;
-        }
-        
-        /* Opción seleccionada */
-        div[role="option"][aria-selected="true"] {
-            background-color: #e6f2ff !important;
-            color: #003366 !important;
-        }
-        
-        /* Opción al hacer hover */
-        div[role="option"]:hover {
-            background-color: #f0f7ff !important;
-        }
-        
-        /* Placeholder */
-        div[data-baseweb="select"] div[aria-live] {
-            color: #666 !important;
-            font-style: italic !important;
         }
 
         /* Tablas */
@@ -142,18 +109,40 @@ def set_custom_style():
             border-radius: 10px;
         }
 
-        /* Responsive para móviles */
+        /* ===== CORRECCIÓN MÓVILES (nuevo) ===== */
+        /* Fuerza colores visibles en móviles */
+        h1, h2, h3, h4, h5, h6,
+        .stMarkdown, .stAlert, .stMetric,
+        .st-expander, .stDataFrame,
+        .st-bb, .st-at, .st-ae, .st-af, 
+        .st-ag, .st-ah, .st-ai, .st-aj {
+            color: #222222 !important;
+        }
+
+        /* Métricas específicas */
+        .stMetric label, .stMetric div {
+            color: #222222 !important;
+        }
+
+        /* Ajustes responsive */
         @media (max-width: 768px) {
-            /* Ajuste general para contenedores */
+            /* Fondo más opaco para mejor contraste */
             .block-container {
-                padding: 1rem !important;
+                background-color: rgba(255, 255, 255, 0.98) !important;
+                padding: 1.5rem !important;
             }
             
-            /* Ajuste específico para el selectbox en móviles */
-            div[data-baseweb="select"] > div:first-child {
-                padding: 0.3rem 0.6rem !important;
+            /* Títulos más oscuros */
+            h1, h2, h3 {
+                color: #002244 !important;
+            }
+            
+            /* Texto en expanders */
+            .st-expander .stMarkdown {
+                color: #222222 !important;
             }
         }
+
     </style>
     """, unsafe_allow_html=True)
 
